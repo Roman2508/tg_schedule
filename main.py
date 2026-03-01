@@ -27,10 +27,9 @@ async def ensure_super_admin():
     """Create super admin record in DB on startup."""
     async with async_session_maker() as session:
         user = await get_or_create_user(session, telegram_id=settings.SUPER_ADMIN_ID)
-        if user.role != UserRole.ADMIN:
-            user.role = UserRole.ADMIN
-            await session.commit()
-            logger.info(f"Super admin {settings.SUPER_ADMIN_ID} role set.")
+        user.role = UserRole.ADMIN
+        await session.commit()
+        logger.info(f"Super admin {settings.SUPER_ADMIN_ID} role ensured.")
 
 
 async def main():
